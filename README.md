@@ -23,52 +23,52 @@ Each challenge lives in its own folder under `courses-1-2/`, named after its lev
 
 ### Level 1 — JavaScript Fundamentals
 
-- [x] [n1-01 — *Invoice calculator*](courses-1-2/n1-01/)
-- [ ] n1-02 — *Credit rating classifier*
-- [ ] n1-03 — *Savings plan*
-- [ ] n1-04 — *Price series statistics*
-- [ ] n1-05 — *Reusable functions*
-- [ ] n1-06 — *Immutable portfolio*
+- [x] [n1-01 — _Invoice calculator_](courses-1-2/n1-01/)
+- [x] [n1-02 — _Credit rating classifier_](courses-1-2/n1-02/)
+- [ ] n1-03 — _Savings plan_
+- [ ] n1-04 — _Price series statistics_
+- [ ] n1-05 — _Reusable functions_
+- [ ] n1-06 — _Immutable portfolio_
 
 ### Level 2 — DOM Manipulation
 
-- [ ] n2-01 — *Choose your favorite*
-- [ ] n2-02 — *Dark mode and font size*
-- [ ] n2-03 — *Converter with validation*
-- [ ] n2-04 — *Priority task list*
+- [ ] n2-01 — _Choose your favorite_
+- [ ] n2-02 — _Dark mode and font size_
+- [ ] n2-03 — _Converter with validation_
+- [ ] n2-04 — _Priority task list_
 
 ### Level 3 — Events, Callbacks and Scope
 
-- [ ] n3-01 — *Post box with shortcuts*
-- [ ] n3-02 — *Stopwatch with laps*
-- [ ] n3-03 — *Transaction table with event delegation*
-- [ ] n3-04 — *Custom context menu*
-- [ ] n3-05 — *Predict the output*
+- [ ] n3-01 — _Post box with shortcuts_
+- [ ] n3-02 — _Stopwatch with laps_
+- [ ] n3-03 — _Transaction table with event delegation_
+- [ ] n3-04 — _Custom context menu_
+- [ ] n3-05 — _Predict the output_
 
 ### Level 4 — Asynchronous Code and External Data
 
-- [ ] n4-01 — *Handcrafted promises*
-- [ ] n4-02 — *First fetch: ECB exchange rates*
-- [ ] n4-03 — *Currency converter with query strings*
-- [ ] n4-04 — *Parallel requests*
-- [ ] n4-05 — *Async/await refactoring*
+- [ ] n4-01 — _Handcrafted promises_
+- [ ] n4-02 — _First fetch: ECB exchange rates_
+- [ ] n4-03 — _Currency converter with query strings_
+- [ ] n4-04 — _Parallel requests_
+- [ ] n4-05 — _Async/await refactoring_
 
 ### Level 5 — Animation and SVG
 
-- [ ] n5-01 — *CSS transitions*
-- [ ] n5-02 — *Animation engine with easing*
-- [ ] n5-03 — *Keyframes and Web Animations API*
-- [ ] n5-04 — *Bar chart with SVG*
-- [ ] n5-05 — *Sparkline with path*
+- [ ] n5-01 — _CSS transitions_
+- [ ] n5-02 — _Animation engine with easing_
+- [ ] n5-03 — _Keyframes and Web Animations API_
+- [ ] n5-04 — _Bar chart with SVG_
+- [ ] n5-05 — _Sparkline with path_
 
 ### Level 6 — Integrative Challenges
 
-- [ ] n6-01 — *Memory game*
-- [ ] n6-02 — *Trivia quiz with an API*
+- [ ] n6-01 — _Memory game_
+- [ ] n6-02 — _Trivia quiz with an API_
 
 ### Final Project — Currency Monitor
 
-- [ ] **Final project** — *Currency monitor*
+- [ ] **Final project** — _Currency monitor_
 
 ## How to Run the Challenges
 
