@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credict risk classifier</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <h1>Credit Risk Classifier</h1>
+    <p>Solution for Challenge n1-02.</p>
+    <h2>Challenge description</h2>
+    <p>Given a score between 0 and 1000, classify it as follows:</p>
+    <ul>
+      <li>Excellent: 800 or higher</li>
+      <li>Good: 650 to 799</li>
+      <li>Acceptable: 500 to 649</li>
+      <li>High Risk: below 500</li>
+    </ul>
+    <p>
+      If the score is not a number or is out of range, display "Invalid score".
+    </p>
+    <p>
+      Additionally the classifier receives a boolean variable
+      <i>hasDefaults</i>, If is true the category changes to "High Risk" -
+      unless it wast "Execellent", in which case it shifts to "Acceptable".
+    </p>
+    <h2>Test cases</h2>
+    <ul>
+      <li>
+        Test at least these cases: -1, 0, 499, 500, 649, 650, 799, 800, 1000,
+        1001, "700"
+      </li>
+      <li>Test each case with and without hasDefaults</li>
+    </ul>
+    <p class="note">
+      Bonus challenge: turn it into a function that takes two arguments, score
+      and the boolean hasDesfaults and returns the category.
+    </p>
+    <h2>JavaScript concepts included in this challenge</h2>
+    <ul>
+      <li>Booleans</li>
+      <li>Comparison operators</li>
+      <li>Logical operators</li>
+      <li>if/else if/else statements</li>
+    </ul>
+  </body>
+</html>
