@@ -1,24 +1,23 @@
 /*
-  The script returns the credit risk category given the credit score and a
-  boolean that indicate whether there are defaults
+  The script returns the credit risk category for a given credit score and
+  a boolean that indicates whether there are defaults.
 
   The possible outputs are:
     - Excellent
     - Good
     - Acceptable
     - High Risk
-  If there are defaults the output switch to High Risk unless it was Excellent
-  that switch to Acceptable.
+  If there are defaults, the output switches to High Risk, unless it was
+  Excellent, in which case it switches to Acceptable.
 
   Constants and variables:
     - Constants:
-      . scoreRange: an array with score ranges.
-      . scoreThresholds: an array that constains risk credit categories
-                         scoreThresholds.
-      . riskCreditCategories: an array of different risk credit categories.
-      . invalidScoreOutput: a string to retur for invalids scores
-      . testCases: an array with each test case.
-      . hasDefauls: an array contains false and true.
+      . scoreRange: minimum and maximum valid scores.
+      . scoreThresholds: minimum score for each category above High Risk.
+      . riskCreditCategories: the possible credit risk categories.
+      . invalidScoreOutput: the string returned for invalid scores.
+      . testCases: the scores to test.
+      . defaultOptions: the values to test for hasDefault (false and true).
 */
 
 const scoreRange = [0, 1000];
@@ -28,7 +27,7 @@ const invalidScoreOutput = "Invalid score!";
 
 function validateScore(score) {
   // Checks whether score is a number.
-  if (typeof score !== "number") {
+  if (typeof score !== "number" || Number.isNaN(score)) {
     return false;
   }
   // Checks score ranges
@@ -57,7 +56,7 @@ function riskCreditClassifier(score, hasDefault) {
     riskCreditCategory = riskCreditCategories[3];
   }
 
-  // Checks whethe has defauls and switch category if applied
+  // Checks whether has defaults and switch category if applied
   if (!hasDefault) {
     return riskCreditCategory;
   } else if (riskCreditCategory === riskCreditCategories[3]) {
@@ -68,14 +67,14 @@ function riskCreditClassifier(score, hasDefault) {
 }
 
 // Test cases
-const testCases = [-1, 0, 499, 500, 649, 650, 799, 800, 1000, 1001, "700"];
-const hasDefaults = [false, true];
+const testCases = [-1, 0, 499, 500, 649, 650, 799, 800, 1000, 1001, "700", NaN];
+const defaultOptions = [false, true];
 
 for (const score of testCases) {
-  for (const hasDefault of hasDefaults) {
-    const riskCreditClassification = riskCreditClassifier(score, hasDefault);
+  for (const defaultOption of defaultOptions) {
+    const riskCreditClassification = riskCreditClassifier(score, defaultOption);
     console.log(`Score: ${score}`);
-    console.log(`Has defaults: ${hasDefault}`);
+    console.log(`Has defaults: ${defaultOption}`);
     console.log(`Risk credit classification: ${riskCreditClassification}`);
   }
   console.log("----------------------------------");
