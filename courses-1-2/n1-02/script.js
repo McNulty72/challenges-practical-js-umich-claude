@@ -13,17 +13,32 @@
   Constants and variables:
     - Constants:
       . scoreRange: minimum and maximum valid scores.
-      . scoreThresholds: minimum score for each category above High Risk.
-      . riskCreditCategories: the possible credit risk categories.
+      . riskCreditClassification: the possible credit risk categories and their score thresholds.
       . invalidScoreOutput: the string returned for invalid scores.
       . testCases: the scores to test.
       . defaultOptions: the values to test for hasDefault (false and true).
 */
 
 const scoreRange = [0, 1000];
-const scoreThresholds = [500, 650, 800];
-const riskCreditCategories = ["High Risk", "Acceptable", "Good", "Excellent"];
 const invalidScoreOutput = "Invalid score!";
+const riskCreditClassification = {
+  Acceptable: {
+    scoreThreshold: 500,
+    classification: "Acceptable",
+  },
+  Excellent: {
+    scoreThreshold: 800,
+    classification: "Excellent",
+  },
+  HighRisk: {
+    scoreThreshold: 0,
+    classification: "High Risk",
+  },
+  Good: {
+    scoreThreshold: 650,
+    classification: "Good",
+  },
+};
 
 function validateScore(score) {
   // Checks whether score is a number.
@@ -46,23 +61,28 @@ function riskCreditClassifier(score, hasDefault) {
 
   // Assign risk credit category
   let riskCreditCategory;
-  if (score < scoreThresholds[0]) {
-    riskCreditCategory = riskCreditCategories[0];
-  } else if (score < scoreThresholds[1]) {
-    riskCreditCategory = riskCreditCategories[1];
-  } else if (score < scoreThresholds[2]) {
-    riskCreditCategory = riskCreditCategories[2];
-  } else {
-    riskCreditCategory = riskCreditCategories[3];
+  let bestCategory = "HighRisk";
+  let highThreshold = riskCreditClassification[bestCategory].scoreThreshold;
+  for (const category in riskCreditClassification) {
+    if (
+      score >= riskCreditClassification[category].scoreThreshold &&
+      riskCreditClassification[category].scoreThreshold > highThreshold
+    ) {
+      bestCategory = category;
+      highThreshold = riskCreditClassification[category].scoreThreshold;
+    }
   }
 
   // Checks whether has defaults and switch category if applied
   if (!hasDefault) {
-    return riskCreditCategory;
-  } else if (riskCreditCategory === riskCreditCategories[3]) {
-    return riskCreditCategories[1];
+    return riskCreditClassification[bestCategory].classification;
+  } else if (
+    riskCreditClassification[bestCategory].classification ===
+    riskCreditClassification.Excellent.classification
+  ) {
+    return riskCreditClassification.Acceptable.classification;
   } else {
-    return riskCreditCategories[0];
+    return riskCreditClassification.HighRisk.classification;
   }
 }
 
@@ -72,10 +92,10 @@ const defaultOptions = [false, true];
 
 for (const score of testCases) {
   for (const defaultOption of defaultOptions) {
-    const riskCreditClassification = riskCreditClassifier(score, defaultOption);
+    const riskCategory = riskCreditClassifier(score, defaultOption);
     console.log(`Score: ${score}`);
     console.log(`Has defaults: ${defaultOption}`);
-    console.log(`Risk credit classification: ${riskCreditClassification}`);
+    console.log(`Risk credit classification: ${riskCategory}`);
   }
   console.log("----------------------------------");
 }
