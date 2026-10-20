@@ -3,3 +3,8 @@ h1 {
     text-decoration: underline;
     margin-bottom: 75px;
 }
+code {
+    background-color: #e0dcdc;
+    padding: 2px 2px;
+    border-radius: 5px;
+}
