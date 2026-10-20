@@ -1,7 +1,7 @@
 /*
   The scripts define the following functions:
     - calculateVAT(base, rate)
-    - applyDiscount(price, percentage)
+    - applyDiscount(amount, pct)
     - formatEuros(amount): returns a string like "1234.50 €"
     - average(numbers)
     - isEven(n)
@@ -21,13 +21,10 @@
     . discountThresholds: quantity thresholds that determine the discount percentage
     . discountPcts: discount percentages, one per quantity tier
     - discountPct: discount percentage to applied
-    . netInvoice: invoice amount before discount and IVA
-    . discountAmount: discount amount applied
+    . netInvoice: invoice amount before discount and VAT
     . netAfterDiscount: invoice amount after applying the discount
     . vatAmount: VAT amount
     . invoiceTotal: total amount to pay
-  - Variables:
-    . discountPct: discount percentage applied
 */
 
 function roundToFixedDecimals(number, decimals) {
@@ -38,11 +35,11 @@ function calculateVAT(base, rate) {
   return roundToFixedDecimals(base * rate, 2);
 }
 
-function applyDiscount(price, pct) {
-  return roundToFixedDecimals(price * pct, 2);
+function applyDiscount(amount, pct) {
+  return roundToFixedDecimals(amount * (1 - pct), 2);
 }
 
-function formattedEuros(amount) {
+function formatEuros(amount) {
   return amount.toFixed(2) + " €";
 }
 
@@ -58,7 +55,7 @@ function isEven(n) {
   return n % 2 === 0;
 }
 
-function getDiscountPct(amount) {
+function getDiscountPct(quantity) {
   if (quantity < discountThresholds[0]) {
     return discountPcts[0];
   } else if (quantity < discountThresholds[1]) {
@@ -89,8 +86,7 @@ const netInvoice = roundToFixedDecimals(quantity * pricePerUnit, 2);
 
 // Calculate and apply discount amount
 const discountPct = getDiscountPct(quantity);
-const discountAmount = applyDiscount(netInvoice, discountPct);
-const netAfterDiscount = netInvoice - discountAmount;
+const netAfterDiscount = applyDiscount(netInvoice, discountPct);
 
 // Compute VAT amount
 const vatAmount = calculateVAT(netAfterDiscount, vatPct);
@@ -102,37 +98,53 @@ const invoiceTotal = netAfterDiscount + vatAmount;
 const invoiceID = generateInvoiceID();
 
 // Functions tests
-console.log("Test calculateVAT expected values 263.13 and 100.24");
-console.log(calculateVAT(1253, 0.21)); // Expected value 263.13
-console.log(calculateVAT(1253, 0.08)); // Expected value 100.24
+console.log("Test calculateVAT...");
+console.log(
+  `calculateVAT(1253, 0.21) === 263.13: ${calculateVAT(1253, 0.21) === 263.13}`,
+);
+console.log(
+  `calculateVAT(1253, 0.08) === 100.24: ${calculateVAT(1253, 0.08) === 100.24}`,
+);
 console.log("-----------------------------------------------------");
-console.log("Test applyDiscount expected values 34.65 and 111.87");
-console.log(applyDiscount(495, 0.07)); // Expected value 34.65
-console.log(applyDiscount(932.25, 0.12)); // Expected value 111.87
+console.log("Test applyDiscount...");
+console.log(
+  `applyDiscount(495, 0.07) === 460.35: ${applyDiscount(495, 0.07) === 460.35}`,
+);
+console.log(
+  `applyDiscount(932.25, 0.12) === 820.38: ${applyDiscount(932.25, 0.12) === 820.38}`,
+);
 console.log("-----------------------------------------------------");
-console.log("Test formatEuros expected values '1002.54 €' and '124.30'");
-console.log(formattedEuros(1002.5378)); // Expected value '1002.54 €'
-console.log(formattedEuros(124.3)); // Expected value '124.30 €'
+console.log("Test formatEuros...");
+console.log(
+  `formatEuros(1002.5378) === "1002.54 €": ${formatEuros(1002.5378) === "1002.54 €"}`,
+);
+console.log(
+  `formatEuros(124.30) === "124.30 €": ${formatEuros(124.3) === "124.30 €"}`,
+);
 console.log("-----------------------------------------------------");
-console.log("Test average expected values 67.15 and 3.98");
-console.log(average([65.57, 72.89, 77.8, 52.35])); // Expected value 67.15
-console.log(average([6.35, -3.15, 8.75])); // Expected value 3.98
+console.log("Test average...");
+console.log(
+  `average([65.57, 72.89, 77.8, 52.35]) === 67.15: ${average([65.57, 72.89, 77.8, 52.35]) === 67.15}`,
+);
+console.log(
+  `average([6.35, -3.15, 8.75]) === 3.98: ${average([6.35, -3.15, 8.75]) === 3.98}`,
+);
 console.log("-----------------------------------------------------");
-console.log("Test isEven expected values true and false");
-console.log(isEven(126)); // Expected value true
-console.log(isEven(-17)); // Expected value false
+console.log("Test isEven...");
+console.log(`isEven(126) === true: ${isEven(126) === true}`);
+console.log(`isEven(-17) === false: ${isEven(-17) === false}`);
 
 // Log invoice details to the console.
 console.log("Invoice details");
 console.log("----------------------------------------");
 console.log(`Invoice ID: ${invoiceID}`);
 console.log(`Quantity: ${quantity}`);
-console.log(`Price per unit: ${pricePerUnit.toFixed(2)}€`);
-console.log(`Net invoice amount: ${netInvoice.toFixed(2)}€`);
+console.log(`Price per unit: ${formatEuros(pricePerUnit)}`);
+console.log(`Net invoice amount: ${formatEuros(netInvoice)}`);
 console.log(`Discount percentage: ${(discountPct * 100).toFixed(2)}%`);
-console.log(`Discount amount: ${discountAmount.toFixed(2)}€`);
-console.log(`Invoice - discount: ${netAfterDiscount.toFixed(2)}€`);
+console.log(`Discount amount: ${formatEuros(netInvoice - netAfterDiscount)}`);
+console.log(`Invoice - discount: ${formatEuros(netAfterDiscount)}`);
 console.log(`IVA percentage applied: ${(vatPct * 100).toFixed(2)}%`);
-console.log(`IVA amount: ${vatAmount.toFixed(2)}€`);
-console.log(`Total invoice amount: ${invoiceTotal.toFixed(2)}€`);
+console.log(`IVA amount: ${formatEuros(vatAmount)}`);
+console.log(`Total invoice amount: ${formatEuros(invoiceTotal)}`);
 console.log("----------------------------------------");
