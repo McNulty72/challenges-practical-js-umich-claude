@@ -5,25 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Price series statistics</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
   </head>
   <body>
     <h1>Solution for Challenge n1-04: Price series statistics</h1>
     <h2>Challenge description</h2>
     <p>
       Starting from `const prices = [102.5, 99.8, 101.2, 105.6, 98.4, 103.9,
-      107.1]; compute the sum, mean, maximum, minimun, and the maximun`s
-      position (index). Build a new array with daily variations for each price.
+      107.1]; calculate the sum, average, maximum, minimun, and the maximun`s
+      position (index). Afterward, create a new array containing the daily
+      vvariations: each price minus the price of the previous day.
     </p>
     <p>
-      Don't use `Math.max`, `reduce` or other shorcuts, the target is to
-      practice loops.
+      Don't use `Math.max`, `reduce` or other shorcuts, the goal is to practice
+      loops.
     </p>
+    <h2>It is considered complete when...</h2>
+    <ul>
+      <li>It works with any non-empty array, including negative values.</li>
+      <li>
+        The variations array has exactly one less element than the prices array.
+      </li>
+    </ul>
     <h2>JavaScript concepts included in this challenge</h2>
     <ul>
-      <li>While loops</li>
-      <li>For loops</li>
-      <li>Exit conditions</li>
+      <li>arrays</li>
+      <li>indexes</li>
+      <li>length</li>
+      <li>for...of loops</li>
+      <li>for loops</li>
     </ul>
+    <script src="script.js"></script>
   </body>
 </html>
