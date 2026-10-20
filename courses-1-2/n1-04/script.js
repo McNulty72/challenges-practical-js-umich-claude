@@ -21,29 +21,22 @@
       - sum: the sum of the prices.
       - maximum: the maximum price.
       - maximumPosition: the day number of the maximum price.
-      - idx: a counter to track the maximumPosition.
-      - dayNumber: a counter to log the day number.
 */
 
 const dailyPrices = [102.5, 99.8, 101.2, 105.6, 98.4, 103.9, 107.1];
 
 let sum = 0;
-let maximum = 0;
-let maximunPosition;
-let idx = 0;
+let maximum = dailyPrices[0];
+let minimum = maximum;
+let maximumPosition = 0;
 
-for (const price of dailyPrices) {
+for (let idx = 0; idx < dailyPrices.length; idx++) {
+  const price = dailyPrices[idx];
   sum += price;
   if (price > maximum) {
     maximum = price;
-    maximunPosition = idx;
+    maximumPosition = idx;
   }
-  idx += 1;
-}
-
-// Compute the minimum
-let minimum = maximum;
-for (const price of dailyPrices) {
   minimum = price < minimum ? price : minimum;
 }
 
@@ -52,22 +45,21 @@ const average = Math.round((sum / dailyPrices.length) * 100) / 100;
 
 // Calculate daily price variation
 const dailyPriceVariations = [];
-for (let index = 1; index < dailyPrices.length; index++) {
-  dailyPriceVariations.push(dailyPrices[index] - dailyPrices[index - 1]);
+for (let idx = 1; idx < dailyPrices.length; idx++) {
+  dailyPriceVariations.push(dailyPrices[idx] - dailyPrices[idx - 1]);
 }
 
-console.log("Daily Prices statiticts");
+console.log("Daily Prices statistics");
 console.log("-----------------------");
 console.log(`Sum: ${sum.toFixed(2)}`);
-console.log(`Maximun: ${maximum.toFixed(2)}`);
+console.log(`Maximum: ${maximum.toFixed(2)}`);
 console.log(`Minimum: ${minimum.toFixed(2)}`);
 console.log(`Average: ${average.toFixed(2)}`);
-console.log(`Maximum price on day: ${maximunPosition + 1}`);
+console.log(`Maximum price on day: ${maximumPosition + 1}`);
 console.log("----------------------");
-console.log("Daily price varation:");
+console.log("Daily price variation:");
 
-let dayNumber = 2;
-for (const variation of dailyPriceVariations) {
-  console.log(`Day ${dayNumber} price variation: ${variation.toFixed(2)}`);
-  dayNumber += 1;
+for (let idx = 0; idx < dailyPriceVariations.length; idx++) {
+  const dailyVariation = dailyPriceVariations[idx];
+  console.log(`Day ${idx + 2} price variation: ${dailyVariation.toFixed(2)}`);
 }
