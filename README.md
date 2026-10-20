@@ -26,8 +26,8 @@ Each challenge lives in its own folder under `courses-1-2/`, named after its lev
 - [x] [n1-01 — _Invoice calculator_](courses-1-2/n1-01/)
 - [x] [n1-02 — _Credit rating classifier_](courses-1-2/n1-02/)
 - [x] [n1-03 — _Savings plan_](courses-1-2/n1-03/)
-- [ ] n1-04 — _Price series statistics_
-- [ ] n1-05 — _Reusable functions_
+- [x] [n1-04 — _Price series statistics_](courses-1-2/n1-04/)
+- [x] [n1-05 — _Reusable functions_](courses-1-2/n1-05/)
 - [ ] n1-06 — _Immutable portfolio_
 
 ### Level 2 — DOM Manipulation
