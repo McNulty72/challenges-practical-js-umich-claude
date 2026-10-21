@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio without mutations</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Solution for Challenge n1-06: Portfolio without mutations</h1>
+    <h2>Challenge description</h2>
+    <p>
+      A position is an object { ticker, quantity, averagePrice } and a portfolio
+      is an array of positions. Write:
+    </p>
+    <ul>
+      <li>positionValue(pos, currentPrice)</li>
+      <li>
+        buy(pos, quantity, price): returns a new position with the updated
+        quantity and average price without modifying the original one
+      </li>
+      <li>
+        portfolioValue(portfolio, prices): where prices is an object like {
+        AAPL: 190, MSFT: 410 }
+      </li>
+    </ul>
+    <h2>Criteria for Completion:</h2>
+    <ul>
+      <li>
+        Demonstrate with <code>console.log</code> that the original position
+        does not change after buying.
+      </li>
+      <li><code>portfolioValue</code> works with any number of positions.</li>
+    </ul>
+    <h2>JavaScript concepts included in this challenge</h2>
+    <ul>
+      <li>Objects</li>
+      <li>Dot and bracket notations</li>
+      <li>Spread syntax</li>
+    </ul>
+    <script src="script.js"></script>
+  </body>
+</html>
