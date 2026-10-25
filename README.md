@@ -32,7 +32,7 @@ Each challenge lives in its own folder under `courses-1-2/`, named after its lev
 
 ### Level 2 — DOM Manipulation
 
-- [ ] n2-01 — _Choose your favorite_
+- [x] [n2-01 — _Choose your favorite_](courses-1-2/n2-01/)
 - [ ] n2-02 — _Dark mode and font size_
 - [ ] n2-03 — _Converter with validation_
 - [ ] n2-04 — _Priority task list_
