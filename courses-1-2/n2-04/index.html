@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form>
+      <fieldset id="form-container">
+        <legend>Add tasks</legend>
+
+        <div>
+          <label for="task">Type a new task:</label>
+          <input
+            type="text"
+            id="task"
+            placeholder="For example do homework..."
+          />
+        </div>
+        <fieldset class="radio-container">
+          <legend>Select task priority</legend>
+
+          <input type="radio" id="high" name="task-priority" value="high" />
+          <label for="high">High</label>
+
+          <input type="radio" id="medium" name="task-priority" value="medium" />
+          <label for="medium">Medium</label>
+
+          <input type="radio" id="low" name="task-priority" value="low" />
+          <label for="low">Low</label>
+        </fieldset>
+        <button class="add-task">Add task</button>
+      </fieldset>
+    </form>
+    <div class="tasks-panel">
+      <div class="tasks-resume">
+        <p>Tasks:</p>
+        <p class="tasks-count">0/0 done</p>
+      </div>
+      <div class="tasks-container">
+        <ul class="tasks-list"></ul>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
