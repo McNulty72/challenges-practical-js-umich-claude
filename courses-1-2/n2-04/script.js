@@ -1,17 +1,11 @@
 const inputTask = document.querySelector("#task");
-const taskPriorities = document.querySelector(".radio-container");
 const addTaskBtn = document.querySelector(".add-task");
-let tasksCount = 0;
-let tasksDoneCount = 0;
-
-let taskPriority = "";
-function getPriotity(event) {
+// let taskPriority = "";
+function getPriotity() {
   const priority = document.querySelector(
     'input[name="task-priority"]:checked',
   );
-  if (!priority) return;
-  taskPriority = priority.value;
-  console.log(taskPriority);
+  return priority ? priority.value : null;
 }
 
 function createNewElement(element, classes = []) {
@@ -22,9 +16,11 @@ function createNewElement(element, classes = []) {
   return newElement;
 }
 
-function updateTasksCounts(newTasks = 0, tasksDone = 0) {
-  tasksCount += newTasks;
-  tasksDoneCount += tasksDone;
+function updateTasksCounts() {
+  const tasksCount = document.querySelectorAll(".task-item").length;
+  const tasksDoneCount = document.querySelectorAll(
+    ".task-description .done",
+  ).length;
   const tasksCounts = document.querySelector(".tasks-count");
   tasksCounts.textContent = `${tasksDoneCount} / ${tasksCount} done`;
 }
@@ -35,10 +31,10 @@ function manageTasks(event) {
   const taskSpan = currentTarget.querySelector(".task-description span");
   if (target === currentTarget.querySelector(".done-btn")) {
     taskSpan.classList.add("done");
-    updateTasksCounts(0, 1);
-  } else {
-    updateTasksCounts(-1, taskSpan.classList.contains("done") ? -1 : 0);
+    updateTasksCounts();
+  } else if (target === currentTarget.querySelector(".delete-btn")) {
     currentTarget.remove();
+    updateTasksCounts();
   }
 }
 
@@ -55,6 +51,8 @@ function addTask(eve) {
     inputTask.focus();
     return;
   }
+
+  const taskPriority = getPriotity();
 
   // Get tasks list
   const tasksList = document.querySelector(".tasks-list");
@@ -100,5 +98,5 @@ function addTask(eve) {
   newTask.addEventListener("click", manageTasks);
 }
 
-taskPriorities.addEventListener("click", getPriotity);
+// taskPriorities.addEventListener("click", getPriotity);
 addTaskBtn.addEventListener("click", addTask);
