@@ -35,7 +35,7 @@ Each challenge lives in its own folder under `courses-1-2/`, named after its lev
 - [x] [n2-01 — _Choose your favorite_](courses-1-2/n2-01/)
 - [x] [n2-02 — _Dark mode and font size_](courses-1-2/n2-02/)
 - [ ] n2-03 — _Converter with validation_
-- [ ] n2-04 — _Priority task list_
+- [x] [n2-04 — _Priority task list_](courses-1-2/n2-04/)
 
 ### Level 3 — Events, Callbacks and Scope
 
