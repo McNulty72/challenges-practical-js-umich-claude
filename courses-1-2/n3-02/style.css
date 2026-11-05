@@ -1,0 +1,74 @@
+body {
+    max-width: 40rem;
+    margin: 5rem auto;
+}
+.watch-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    gap: 0.1rem;
+    align-items: end;
+}
+.watch-container div {
+    width: fit-content;
+}
+.watch-container span {
+    border-radius: 10px;
+    background-color: #ddd;
+    padding: 5px 8px;
+    font-size: 3rem;
+    font-weight: 700;
+}
+.watch-container div + div:not(.watch-hundredths)::before {
+    content: ":";
+    width: fit-content;
+    font-size: 6rem;
+    font-weight: 700;
+}
+.watch-container div:not(.watch-hundredths) span {
+    font-size: 6rem;
+    font-weight: 700;
+}
+.buttons-container {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    margin-top: 5rem;
+    box-sizing: border-box;
+    gap: 4rem;
+}
+button {
+    padding: 5px 10px;
+    font-size: 2rem;
+    border: none;
+    border-radius: 25px;
+    /*max-width: fit-content;*/
+    width: 12rem;
+    cursor: pointer;
+}
+.laps-container-header,
+.laps-container {
+    display: flex;
+    flex-direction: column;
+    margin: 5rem auto auto 0;
+    width: 80%;
+    max-width: 400px;
+}
+.laps-container {
+    margin-top: 0;
+}
+.laps-container-header div,
+.laps-container div {
+    display: grid;
+    grid-template-columns: 4ch 1fr 1fr;
+    column-gap: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 1px dotted gray;
+    justify-items: center;
+    align-items: center;
+}
+.best-lap span:not(span:last-child) {
+    color: green;
+}
+.worst-lap span:not(span:last-child) {
+    color: crimson;
+}
