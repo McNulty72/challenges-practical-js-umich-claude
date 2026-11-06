@@ -40,7 +40,7 @@ Each challenge lives in its own folder under `courses-1-2/`, named after its lev
 ### Level 3 — Events, Callbacks and Scope
 
 - [ ] n3-01 — _Post box with shortcuts_
-- [ ] n3-02 — _Stopwatch with laps_
+- [x] [n3-02 — _Stopwatch with laps_](courses-1-2/n2-02/)
 - [ ] n3-03 — _Transaction table with event delegation_
 - [ ] n3-04 — _Custom context menu_
 - [ ] n3-05 — _Predict the output_
