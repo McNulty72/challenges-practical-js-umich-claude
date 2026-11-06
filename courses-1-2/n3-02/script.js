@@ -8,7 +8,6 @@ const lapBtn = document.querySelector(".lap-btn");
 const startBtnText = document.querySelector(".start-btn-text");
 const lapBtnText = document.querySelector(".lap-btn-text");
 const SVG_NS = "http://www.w3.org/2000/svg";
-const svgEle = document.querySelector(".lucide");
 
 // Create Icons
 const playIcon = addSVGElement([createPlayIcon()], "lucide-play");
@@ -47,8 +46,9 @@ function formatTimeElapsed(time) {
   };
 }
 
+let totalTimePaused = 0;
 function updateElapsedTime() {
-  timeElapsed += 10;
+  timeElapsed = Date.now() - startTime - totalTimePaused;
   const formatedTime = formatTimeElapsed(timeElapsed);
   hours.textContent = formatedTime.hh;
   minutes.textContent = formatedTime.mm;
@@ -85,7 +85,6 @@ function addSVGElement(svgElements, classToAdd) {
   for (const element of svgElements) {
     svg.append(element);
   }
-  console.log(svg);
   return svg;
 }
 
@@ -135,7 +134,16 @@ function createResetIcon() {
   };
 }
 
+let startTime = null;
+let timePaused = 0;
 function startStopWatch() {
+  if (stopwatchState === "idle") {
+    startTime = Date.now();
+  } else if (stopwatchState === "paused") {
+    timePaused = Date.now() - pauseStartTime;
+    totalTimePaused += timePaused;
+  }
+
   intervalID = setInterval(updateElapsedTime, 10);
   startBtnText.textContent = "Pause";
   lapBtn.disabled = false;
@@ -144,9 +152,12 @@ function startStopWatch() {
   lapBtnText.textContent = "Lap";
   icons.reset.remove();
   lapBtn.prepend(icons.flag);
+  stopwatchState = "running";
 }
 
+let pauseStartTime = null;
 function pauseStopWatch(id) {
+  pauseStartTime = Date.now();
   clearInterval(id);
   startBtnText.textContent = "Resume";
   icons.pause.remove();
@@ -154,11 +165,7 @@ function pauseStopWatch(id) {
   lapBtnText.textContent = "Reset";
   icons.flag.remove();
   lapBtn.prepend(icons.reset);
-}
-
-function resumeStopWatch() {
-  intervalID = setInterval(updateElapsedTime, 10);
-  startBtn.textContent = "Pause";
+  stopwatchState = "paused";
 }
 
 function updateRecordLaps(lapTime, lapClass, lap) {
@@ -226,14 +233,6 @@ function addLap() {
   lapsContainer.prepend(lapDiv);
   lapStartTime = lapEndTime;
   updateRecordLaps(spanLapTime.textContent, `lap-${lapsCount}`, lapsCount);
-  // if (lapsCount == 1) {
-  //   lapsTimeTrack.bestLap.time = spanTotalTime.textContent;
-  //   lapsTimeTrack.bestLap.lapClass = `lap-${lapsCount}`;
-  //   lapsTimeTrack.worstLap.time = spanTotalTime.textContent;
-  //   lapsTimeTrack.worstLap.lapClass = `lap-${lapsCount}`;
-  // } else if (lapsCount >= 2) {
-  // }
-  // console.log("Lap added...");
 }
 
 function resetStopWatch(id) {
@@ -242,6 +241,7 @@ function resetStopWatch(id) {
   lapStartTime = 0;
   lapEndTime = 0;
   lapsCount = 0;
+  totalTimePaused = 0;
   lapsContainer.innerHTML = "";
   hours.textContent = "00";
   minutes.textContent = "00";
@@ -252,21 +252,24 @@ function resetStopWatch(id) {
   lapBtn.prepend(icons.flag);
   lapBtn.disabled = true;
   startBtnText.textContent = "Start";
-  console.log("Stowatch have been reset...");
+  stopwatchState = "idle";
 }
 
 const buttonsActions = {
-  start: startStopWatch,
-  pause: pauseStopWatch,
-  resume: startStopWatch,
-  lap: addLap,
-  reset: resetStopWatch,
+  "start-btn": {
+    idle: startStopWatch,
+    running: pauseStopWatch,
+    paused: startStopWatch,
+  },
+  "lap-btn": {
+    running: addLap,
+    paused: resetStopWatch,
+  },
 };
 
+let stopwatchState = "idle";
 function stopWatchManage(event) {
-  console.log(event.currentTarget.textContent);
-  const targetText = event.target.textContent.trim().toLowerCase();
-  buttonsActions[targetText](intervalID);
+  buttonsActions[event.currentTarget.className][stopwatchState](intervalID);
 }
 
 startBtn.addEventListener("click", stopWatchManage);
