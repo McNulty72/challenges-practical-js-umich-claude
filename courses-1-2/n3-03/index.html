@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank transactions table with events delegation</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form>
+      <h2>Add new transactions</h2>
+      <section>
+        <fieldset>
+          <legend>Transaction details</legend>
+          <labe for="date">Date:</labe>
+          <input type="date" id="date" name="date" />
+          <label for="description">Description:</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            maxlenght="60"
+            required="required"
+          />
+          <label for="amount">Amount:</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            step="0.01"
+            required="required"
+          />
+        </fieldset>
+      </section>
+      <section class="form-buttons">
+        <p>
+          <button type="submit">Add transaction</button>
+        </p>
+      </section>
+    </form>
+    <script src="script.js"></script>
+  </body>
+</html>

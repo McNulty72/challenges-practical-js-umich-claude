@@ -1,0 +1,147 @@
+:root {
+    font-family: "Helvetica", "Arial", sans-serif;
+}
+table {
+    table-layout: fixed;
+    width: 50%;
+    margin: 0.8rem auto;
+    border-collapse: collapse;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+}
+tr > :nth-child(1) {
+    text-align: center;
+    width: 15%;
+}
+tr > :nth-child(2) {
+    text-align: left;
+    width: 35%;
+}
+tr :nth-child(3) {
+    text-align: right;
+    width: 20%;
+}
+tfoot tr :nth-child(1) {
+    text-align: right;
+}
+tfoot tr :nth-child(2) {
+    text-align: right;
+}
+th,
+td {
+    vertical-align: top;
+    padding: 0.3rem;
+}
+tfoot {
+    border-top: 1px solid #999999;
+}
+tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+tbody tr:nth-child(even) {
+    background-color: #f4f5f7;
+}
+tbody tr:hover {
+    background-color: #e9edf2;
+}
+caption {
+    padding: 1em;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+td button {
+    display: inline-flex;
+    align-items: centers;
+    justify-content: center;
+    gap: 3px;
+    margin-left: 1rem;
+    padding: 0.2rem 0.6rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+/*td button + button {
+    margin-left: 1rem;
+}*/
+.higlight-btn {
+    background-color: #1f2937;
+    color: #ede050;
+}
+.higlight-btn::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    mask-image: url("icons/star.svg");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+
+    -webkit-mask-image: url("icons/star.svg");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+.delete-btn {
+    background-color: #1f2937;
+    color: #e66060;
+}
+.delete-btn::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    mask-image: url("icons/trash.svg");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+
+    -webkit-mask-image: url("icons/trash.svg");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+/* Fila destacada */
+tbody tr.is-highlighted {
+    background-color: #fff8d9;
+}
+
+/* Indicador lateral */
+tbody tr.is-highlighted th:first-child {
+    box-shadow: inset 4px 0 0 #d6b92c;
+}
+form {
+    max-width: fit-content;
+    box-sizing: border-box;
+    margin: 2rem auto;
+    border: 1px solid #666666;
+    border-radius: 10px;
+}
+h2 {
+    margin-left: 1rem;
+}
+fieldset {
+    padding: 1rem 3rem;
+    margin: 1rem 2rem;
+}
+#amount {
+    width: 10ch;
+}
+.form-buttons p {
+    margin: auto;
+    text-align: right;
+}
+.form-buttons button {
+    display: inline-block;
+    margin: 0 2rem 1rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+td[data-amount^="-"] {
+    color: #dc3545;
+}
