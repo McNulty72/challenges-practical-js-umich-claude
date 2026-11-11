@@ -1,14 +1,29 @@
 const bodyEle = document.querySelector("body");
 
 const initialTransactions = [
-  { date: "2026-10-30", description: "Salary Payment", amount: "2337.43" },
-  { date: "2026-11-03", description: "Cash withdrawal", amount: "-350.00" },
+  {
+    date: "2026-10-30",
+    description: "Salary Payment",
+    amount: "2337.43",
+    "transaction-type": "salary",
+  },
+  {
+    date: "2026-11-03",
+    description: "Cash withdrawal",
+    amount: "-350.00",
+    "transaction-type": "debit",
+  },
   {
     date: "2026-11-06",
     description: "Direct debit - Endesa",
     amount: "-91.70",
+    "transaction-type": "debit",
   },
 ];
+
+function roundToFixedDecimals(number, decimals) {
+  return Math.round(number * 10 ** decimals) / 10 ** decimals;
+}
 
 function createColumnsIndex() {
   const columnsHeads = [...document.querySelectorAll("thead th")];
@@ -47,59 +62,90 @@ function createChild(ele, classes = [], attrs = {}, text = "") {
 
 // Save original table rows order
 const originalRowsOrder = new Array();
-function addTrasantion(transactionData) {
+function addTransaction(transactionData) {
   const trEle = document.createElement("tr");
   let trEleChild = null;
   Object.keys(transactionData).forEach((key) => {
+    if (key === "transaction-type") return;
+    let cellText = transactionData[key];
     if (key === "date") {
-      trEleChild = createChild(
-        (ele = "th"),
-        undefined,
-        (attrs = { scope: "row" }),
-      );
+      trEleChild = createChild("th", undefined, { scope: "row" });
     } else if (key === "description") {
-      trEleChild = createChild((ele = "td"));
+      trEleChild = createChild("td");
     } else if (key === "amount") {
-      trEleChild = createChild(
-        (ele = "td"),
-        undefined,
-        (attrs = { "data-amount": transactionData[key] }),
-      );
-      updateAccountTotalBalance(Number(transactionData[key]));
+      trEleChild = createChild("td", undefined, {
+        "data-amount": transactionData[key],
+      });
+      cellText = Number(cellText).toFixed(2);
     }
-    trEleChild.textContent = transactionData[key];
+    trEleChild.textContent = cellText;
     trEle.append(trEleChild);
   });
 
   // Add buttons
-  const higlightedBtn = createChild(
-    (ele = "button"),
-    (classes = "higlight-btn"),
-    undefined,
-    (text = "Highlight"),
+  const highlightedBtn = createChild(
+    "button",
+    "highlight-btn",
+    { "data-action": "highlight" },
+    "Highlight",
   );
   const deletedBtn = createChild(
-    (ele = "button"),
-    (classes = "delete-btn"),
-    undefined,
-    (text = "Delete"),
+    "button",
+    "delete-btn",
+    { "data-action": "delete" },
+    "Delete",
   );
-  trEleChild = createChild((ele = "td"));
-  trEleChild.append(...[higlightedBtn, deletedBtn]);
+  trEleChild = createChild("td");
+  trEleChild.append(...[highlightedBtn, deletedBtn]);
   trEle.append(trEleChild);
+
+  // Add transaction type getAttribute
+  const dataType = transactionData["transaction-type"];
+  trEle.setAttribute("data-type", dataType);
   tableBody.append(trEle);
 
   // Add row to originalRowsOrder
   originalRowsOrder.push(trEle);
+
+  // Update account balance
+  updateAccountTotalBalance();
+  if (dataType === "salary") setOverdraftLimit();
+  setAvailableBalance();
+}
+
+const overdraftPercentage = 0.25;
+let overdraftLimit = 0;
+function setOverdraftLimit() {
+  let averageSalary = 0;
+  const salaryRows = tableBody.querySelectorAll('tr[data-type="salary"]');
+  const rows = Array.from(salaryRows);
+  averageSalary =
+    rows.reduce(
+      (total, row) =>
+        total + Number(row.cells[columnsIndex["amount"]].textContent),
+      0,
+    ) / rows.length;
+  overdraftLimit = averageSalary
+    ? roundToFixedDecimals(averageSalary * overdraftPercentage, 2)
+    : 0;
+}
+
+let availableBalance = 0;
+function setAvailableBalance() {
+  availableBalance = accountBalance + overdraftLimit;
 }
 
 function onSubmit(event) {
   event.preventDefault();
+  const transactionType = document.querySelector(
+    'input[name="transaction-type"]:checked',
+  ).value;
   const formData = new Object();
   formData["date"] = inputDate.value;
   formData["description"] = inputDescription.value;
   formData["amount"] = Number(inputAmount.value);
-  addTrasantion(formData);
+  formData["transaction-type"] = transactionType;
+  addTransaction(formData);
   // Clear input fields and set input date to today
   inputDescription.value = "";
   inputAmount.value = "";
@@ -147,12 +193,18 @@ function handleRowsOrdering(event) {
   event.target.setAttribute("data-order", newOrder);
 }
 
-let accountBalance = null;
-function updateAccountTotalBalance(amount) {
-  console.log(amount, typeof amount);
+let accountBalance = NaN;
+function updateAccountTotalBalance() {
+  accountBalance = 0;
+  const rows = tableBody.rows;
+  const amountCellsIndex = columnsIndex["amount"];
+  Array.from(rows).forEach((row) => {
+    accountBalance += Number(row.cells[amountCellsIndex].textContent);
+  });
+  accountBalance = roundToFixedDecimals(accountBalance, 2);
   const balanceTd = document.querySelector(".total-balance");
-  accountBalance += amount;
   balanceTd.textContent = accountBalance.toFixed(2);
+  balanceTd.setAttribute("data-amount", accountBalance);
 }
 
 function highlightRow(row) {
@@ -160,10 +212,14 @@ function highlightRow(row) {
 }
 
 function deleteRow(row) {
+  const rowIdx = originalRowsOrder.indexOf(row);
+  if (rowIdx !== -1) {
+    originalRowsOrder.splice(rowIdx, 1);
+  }
   row.remove();
-  updateAccountTotalBalance(
-    -Number(row.cells[columnsIndex["amount"]].textContent),
-  );
+  updateAccountTotalBalance();
+  if (row.dataset.type === "salary") setOverdraftLimit();
+  setAvailableBalance();
 }
 
 const btnsActions = {
@@ -171,10 +227,22 @@ const btnsActions = {
   delete: deleteRow,
 };
 function handleActions(event) {
-  const action = btnsActions[event.target.textContent.trim().toLowerCase()];
+  const action = btnsActions[event.target.dataset.action];
   if (!action) return;
-  const targetRow = event.target.parentElement.parentElement;
+  const targetRow = event.target.closest("tr");
   action(targetRow);
+}
+
+function validateAmount() {
+  const submitBtn = document.querySelector(".submit-btn");
+  const msgContainer = document.querySelector(".insufficient-funds");
+  const isValid = Number(inputAmount.value) + availableBalance >= 0;
+
+  // Disabled submit button whether if not isValid
+  submitBtn.disabled = !isValid;
+
+  // Show insufficient available balance message
+  msgContainer.hidden = isValid;
 }
 
 const transactionsTable = createChild("table");
@@ -213,11 +281,6 @@ transactionsTable.append(tableFoot);
 // Add table
 bodyEle.append(transactionsTable);
 
-// Add initial transactions
-for (const transaction of initialTransactions) {
-  addTrasantion(transaction);
-}
-
 // Create a columns headers index for indexing and ordering purposes
 const columnsIndex = {};
 createColumnsIndex();
@@ -226,6 +289,12 @@ const orderingColumnsIndexes = {
   date: columnsIndex["date"],
   amount: columnsIndex["amount"],
 };
+
+// Add initial transactions
+for (const transaction of initialTransactions) {
+  addTransaction(transaction);
+}
+
 // Manage new trasanctions
 const newTransactionForm = document.querySelector("form");
 const inputDate = document.querySelector("#date");
@@ -239,3 +308,6 @@ document.addEventListener("DOMContentLoaded", setDefaultDateToday);
 // Add listeners to the table to handle ordering and rows actions.
 tableBody.addEventListener("click", handleActions);
 tableHeader.addEventListener("click", handleRowsOrdering);
+
+// Add listener to validate transaction amount
+inputAmount.addEventListener("input", validateAmount);

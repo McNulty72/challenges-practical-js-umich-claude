@@ -12,14 +12,44 @@
       <section>
         <fieldset>
           <legend>Transaction details</legend>
-          <labe for="date">Date:</labe>
+          <label for="date">Date:</label>
           <input type="date" id="date" name="date" />
+          <fieldset>
+            <legend>Transaction type</legend>
+            <label for="salary"
+              ><input
+                type="radio"
+                id="salary"
+                name="transaction-type"
+                value="salary"
+                required
+              />Salary</label
+            >
+
+            <label for="credit"
+              ><input
+                type="radio"
+                id="credit"
+                name="transaction-type"
+                value="credit"
+              />Credit</label
+            >
+
+            <label for="debit"
+              ><input
+                type="radio"
+                id="debit"
+                name="transaction-type"
+                value="debit"
+              />Debit</label
+            >
+          </fieldset>
           <label for="description">Description:</label>
           <input
             type="text"
             id="description"
             name="description"
-            maxlenght="60"
+            maxlength="60"
             required="required"
           />
           <label for="amount">Amount:</label>
@@ -33,8 +63,12 @@
         </fieldset>
       </section>
       <section class="form-buttons">
+        <div class="insufficient-funds" hidden>
+          <h3>Insufficient available balance</h3>
+          <p>This transaction exceeds your available balance.</p>
+        </div>
         <p>
-          <button type="submit">Add transaction</button>
+          <button type="submit" class="submit-btn">Add transaction</button>
         </p>
       </section>
     </form>

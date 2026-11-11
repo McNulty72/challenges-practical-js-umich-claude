@@ -51,7 +51,7 @@ caption {
 }
 td button {
     display: inline-flex;
-    align-items: centers;
+    align-items: center;
     justify-content: center;
     gap: 3px;
     margin-left: 1rem;
@@ -63,11 +63,11 @@ td button {
 /*td button + button {
     margin-left: 1rem;
 }*/
-.higlight-btn {
+.highlight-btn {
     background-color: #1f2937;
     color: #ede050;
 }
-.higlight-btn::before {
+.highlight-btn::before {
     content: "";
     display: inline-block;
     width: 18px;
@@ -126,10 +126,23 @@ fieldset {
     padding: 1rem 3rem;
     margin: 1rem 2rem;
 }
+fieldset fieldset {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+}
 #amount {
     width: 10ch;
 }
-.form-buttons p {
+.form-buttons {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+.form-buttons > p {
+    grid-column: 2;
+    display: inline-block;
     margin: auto;
     text-align: right;
 }
@@ -144,4 +157,42 @@ fieldset {
 }
 td[data-amount^="-"] {
     color: #dc3545;
+}
+.insufficient-funds {
+    grid-column: 1;
+    box-sizing: border-box;
+    margin-left: 2rem;
+    border: 2px solid crimson;
+    border-radius: 8px;
+    background-color: #ede050;
+}
+/*.insufficient-funds h3 {
+    margin: 0.5rem;
+}*/
+.insufficient-funds h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.5rem;
+}
+.insufficient-funds h3::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    /*margin-right: 0.6rem;*/
+    background-color: currentColor;
+    color: crimson;
+    mask-image: url("icons/exclamation.svg");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+
+    -webkit-mask-image: url("icons/exclamation.svg");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+.insufficient-funds p {
+    margin: 0.5rem;
 }
