@@ -25,6 +25,10 @@ function roundToFixedDecimals(number, decimals) {
   return Math.round(number * 10 ** decimals) / 10 ** decimals;
 }
 
+function adjustAmountSign(amount, transactionType) {
+  return transactionType !== "debit" ? amount : -amount;
+}
+
 function createColumnsIndex() {
   const columnsHeads = [...document.querySelectorAll("thead th")];
   columnsHeads.forEach((head) => {
@@ -137,13 +141,20 @@ function setAvailableBalance() {
 
 function onSubmit(event) {
   event.preventDefault();
+  if (!validateAmount()) {
+    inputAmount.focus();
+    return;
+  }
   const transactionType = document.querySelector(
     'input[name="transaction-type"]:checked',
   ).value;
   const formData = new Object();
   formData["date"] = inputDate.value;
   formData["description"] = inputDescription.value;
-  formData["amount"] = Number(inputAmount.value);
+  formData["amount"] = adjustAmountSign(
+    Number(inputAmount.value),
+    transactionType,
+  );
   formData["transaction-type"] = transactionType;
   addTransaction(formData);
   // Clear input fields and set input date to today
@@ -193,7 +204,7 @@ function handleRowsOrdering(event) {
   event.target.setAttribute("data-order", newOrder);
 }
 
-let accountBalance = NaN;
+let accountBalance = 0;
 function updateAccountTotalBalance() {
   accountBalance = 0;
   const rows = tableBody.rows;
@@ -236,13 +247,36 @@ function handleActions(event) {
 function validateAmount() {
   const submitBtn = document.querySelector(".submit-btn");
   const msgContainer = document.querySelector(".insufficient-funds");
-  const isValid = Number(inputAmount.value) + availableBalance >= 0;
+  const transactionType = document.querySelector(
+    'input[name="transaction-type"]:checked',
+  ).value;
+
+  // Allow always to add Salary and Credit transactions
+  let isValid = false;
+  if (transactionType !== "debit") {
+    isValid = true;
+  } else {
+    isValid =
+      adjustAmountSign(Number(inputAmount.value), transactionType) +
+        availableBalance >=
+      0;
+  }
 
   // Disabled submit button whether if not isValid
   submitBtn.disabled = !isValid;
 
   // Show insufficient available balance message
   msgContainer.hidden = isValid;
+
+  return isValid;
+}
+
+function setAmountInputAvailability(event) {
+  inputAmount.disabled = false;
+  //   !(
+  //   document.querySelector('input[name="transaction-type"]:checked') !== null
+  // );
+  validateAmount();
 }
 
 const transactionsTable = createChild("table");
@@ -300,10 +334,12 @@ const newTransactionForm = document.querySelector("form");
 const inputDate = document.querySelector("#date");
 const inputDescription = document.querySelector("#description");
 const inputAmount = document.querySelector("#amount");
+const transactionTypeContainer = document.querySelector("#transaction-type");
+transactionTypeContainer.addEventListener("change", setAmountInputAvailability);
 newTransactionForm.addEventListener("submit", onSubmit);
 
 // Set form default date to today on page load
-document.addEventListener("DOMContentLoaded", setDefaultDateToday);
+setDefaultDateToday();
 
 // Add listeners to the table to handle ordering and rows actions.
 tableBody.addEventListener("click", handleActions);
