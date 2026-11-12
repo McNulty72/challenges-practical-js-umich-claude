@@ -41,7 +41,7 @@ Each challenge lives in its own folder under `courses-1-2/`, named after its lev
 
 - [ ] n3-01 — _Post box with shortcuts_
 - [x] [n3-02 — _Stopwatch with laps_](courses-1-2/n2-02/)
-- [ ] n3-03 — _Transaction table with event delegation_
+- [x] [n3-03 — _Transaction table with event delegation_](courses-1-2/n2-03/)
 - [ ] n3-04 — _Custom context menu_
 - [ ] n3-05 — _Predict the output_
 
